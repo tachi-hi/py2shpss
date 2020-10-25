@@ -65,6 +65,6 @@ Citation
 
 Two-stage HPSS was proposed in following papers.
 
-.. [1] H. Tachibana, T. Ono, N. Ono, S.Sagayama, **"Melody line estimation in homophonic music audio signals based on temporal-variability of melodic source,"** in *Proc. ICASSP*, pp.425--428, IEEE, 2010
-.. [2] H. Tachibana, N. Ono, S. Sagayama, **"Singing voice enhancement in monaural music signals based on two-stage harmonic/percussive sound separation on multiple resolution spectrograms,"** *IEEE/ACM TASLP*, vol. 22, no. 1, pp. 228--237, 2014
-.. [3] H. Tachibana, Y. Mizuno, N. Ono, S. Sagayama, **"A real-time audio-to-audio karaoke generation system for monaural recordings based on singing voice suppression and key conversion techniques"**, *Journal of Information Processing*, vol. 24, no. 3, pp. 470-482, Information Processing Society of Japan, 2016
+.. [1] \ H. Tachibana, T. Ono, N. Ono, S.Sagayama, **"Melody line estimation in homophonic music audio signals based on temporal-variability of melodic source,"** in *Proc. ICASSP*, pp.425--428, IEEE, 2010
+.. [2] \ H. Tachibana, N. Ono, S. Sagayama, **"Singing voice enhancement in monaural music signals based on two-stage harmonic/percussive sound separation on multiple resolution spectrograms,"** *IEEE/ACM TASLP*, vol. 22, no. 1, pp. 228--237, 2014
+.. [3] \ H. Tachibana, Y. Mizuno, N. Ono, S. Sagayama, **"A real-time audio-to-audio karaoke generation system for monaural recordings based on singing voice suppression and key conversion techniques"**, *Journal of Information Processing*, vol. 24, no. 3, pp. 470-482, Information Processing Society of Japan, 2016
