@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 from os import path
 
 def _readme():
-    with open('README.md') as readme_file:
+    with open('README.rst') as readme_file:
         return readme_file.read()
 
 def _requirements():
@@ -35,6 +35,7 @@ setup(
     install_requires=requirements,
     license="MIT license",
     long_description=_readme(),
+    # long_description_content_type='text/markdown',
     include_package_data=True,
     keywords='py2shpss',
     name='py2shpss',
@@ -43,6 +44,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/tachi-hi/py2shpss',
-    version='0.1.0',
+    version='0.0.2',
     zip_safe=False,
 )
