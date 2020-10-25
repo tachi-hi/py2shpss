@@ -27,24 +27,44 @@ License
 
 Copyright :copyright: 2020 Hideyuki Tachibana, `MIT License <LICENSE>`_
 
+Usage
+-----
+Install
+^^^^^^^
+
+.. code-block:: bash
+
+    pip install py2shpss
+
+Code Example
+^^^^^^^^^^^^
+
+.. code-block:: python
+
+	# import
+	import numpy as np
+	import scipy.io.wavfile as wavfile
+	import py2shpss
+
+	# load music
+	sr, sig = wavfile.read("your_awesome_music.wav")
+	if len(sig.shape) == 2:
+		# mix left and right channels if stereo
+		sig = np.mean(sig, axis=1)
+	sig = sig / np.max(sig)
+
+	# process and save
+	twostageHPSS = py2shpss.twostageHPSS()
+	harmonic, vocal, percussive = twostageHPSS(sig)
+	wavfile.write("vocal.wav", sr, vocal)
+
+
+
 Citation
 --------
 
 Two-stage HPSS was proposed in following papers.
 
-.. list-table::
-   :header-rows: 1
-
-   * - Title
-     - Note
-   * - Tachibana et al., **Melody line estimation in homophonic music audio signals based on temporal-variability of melodic source**\ , in *Proc. ICASSP* 2010
-     - Singing voice enhancement followed by a pitch extraction.
-   * - Tachibana et al., **Singing voice enhancement in monaural music signals based on two-stage harmonic/percussive sound separation on multiple resolution spectrograms**\ , _IEEE/ACM *TASLP*\ , 2014
-     - Journal version of the above conference paper.
-   * - Tachibana et al., **A real-time audio-to-audio karaoke generation system for monaural recordings based on singing voice suppression and key conversion techniques**\ , *Journal of Information Processing*\ , 2016
-     - A Karaoke application (EUTERPE) using the two-stage HPSS.
-   * - `TOOS (Tachibana, Ono, Ono, Sagayama), MIREX 2009 Audio Melody Extraction <https://www.music-ir.org/mirex/wiki/2009:Audio_Melody_Extraction_Results>`_
-     - Submission to an evaluation campaign on music information retrieval. (Non-refereed.)
-   * - Tachibana et al., **Vocal sound suppression in monaural audio signals by multi-stage harmonicpercussive sound separation (HPSS)**\ , in *Proc. ASJ Spring*\ , 2009
-     - Initial publication of the idea, at a domestic conference. (Non-refereed. In Japanese.)
-
+.. [1] H. Tachibana, T. Ono, N. Ono, S.Sagayama, **"Melody line estimation in homophonic music audio signals based on temporal-variability of melodic source,"** in *Proc. ICASSP*, pp.425--428, IEEE, 2010
+.. [2] H. Tachibana, N. Ono, S. Sagayama, **"Singing voice enhancement in monaural music signals based on two-stage harmonic/percussive sound separation on multiple resolution spectrograms,"** *IEEE/ACM TASLP*, vol. 22, no. 1, pp. 228--237, 2014
+.. [3] H. Tachibana, Y. Mizuno, N. Ono, S. Sagayama, **"A real-time audio-to-audio karaoke generation system for monaural recordings based on singing voice suppression and key conversion techniques"**, *Journal of Information Processing*, vol. 24, no. 3, pp. 470-482, Information Processing Society of Japan, 2016
