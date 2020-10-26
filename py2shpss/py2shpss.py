@@ -1,6 +1,7 @@
 import sys
 import numpy as np
 import scipy.signal
+from py2shpss import samprate as samprate_lib
 
 class HPSS(object):
     def __init__(self, mode='hm21', iter=30, h_size=1, p_size=1, *args, **kwargs):
@@ -84,7 +85,18 @@ class STFT(object):
             nfft=self.frame)[-1]
 
 class twostageHPSS(object):
-    def __init__(self, mode="idiv", fft_short=1024, fft_long=16384, h_size=1, p_size=1, iter=100, *args, **kwargs):
+    def __init__(self, mode="idiv", samprate=16000, fft_short=None, fft_long=None, h_size=1, p_size=1, iter=100, *args, **kwargs):
+        if samprate is None:
+            fft_short = fft_short
+            fft_long = fft_long
+        else:
+            fft_short_, fft_long_ = samprate_lib.SampRate2FFTSize(samprate)
+            if fft_short is not None:
+                assert(fft_short_ == fft_short)
+            if fft_long is not None:
+                assert(fft_long_ == fft_long)
+            fft_short, fft_long = fft_short_, fft_long_
+
         self.stft_short = STFT(fft_short)
         self.stft_long = STFT(fft_long)
         self.hpss_short = HPSS(mode=mode, iter=iter, h_size=h_size, p_size=p_size, *args, **kwargs)

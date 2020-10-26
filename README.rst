@@ -11,7 +11,7 @@ py2shpss
    :target: https://github.com/tachi-hi/py2shpss/actions?query=workflow%3ACI
    :alt: Build Status
 
-.. image:: https://img.shields.io/badge/License-MIT-yellow.svg
+.. image:: https://img.shields.io/pypi/l/py2shpss.svg
    :target: https://opensource.org/licenses/MIT
    :alt: 
 
@@ -51,7 +51,7 @@ Code Example
 	sig = sig / np.max(sig)
 
 	# process and save
-	twostageHPSS = py2shpss.twostageHPSS()
+	twostageHPSS = py2shpss.twostageHPSS(samprate = sr)
 	harmonic, vocal, percussive = twostageHPSS(sig)
 	wavfile.write("vocal.wav", sr, vocal)
 
