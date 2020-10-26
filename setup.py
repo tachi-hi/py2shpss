@@ -26,7 +26,7 @@ test_requirements = _requirements()
 setup(
     author="Hideyuki Tachibana",
     author_email='tachi-hi@users.noreply.github.com',
-    python_requires='>=3.5',
+    python_requires='>=3.6',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Science/Research',
