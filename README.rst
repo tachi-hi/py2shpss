@@ -7,25 +7,22 @@ py2shpss
    :target: https://pypi.python.org/pypi/py2shpss
    :alt: 
 
+.. image:: https://github.com/tachi-hi/py2shpss/workflows/CI/badge.svg
+   :target: https://github.com/tachi-hi/py2shpss/actions?query=workflow%3ACI
+   :alt: Build Status
 
-.. image:: https://img.shields.io/travis/tachi-hi/py2shpss.svg
-   :target: https://travis-ci.com/tachi-hi/py2shpss
+.. image:: https://img.shields.io/badge/License-MIT-yellow.svg
+   :target: https://opensource.org/licenses/MIT
    :alt: 
-
-
-.. image:: https://readthedocs.org/projects/py2shpss/badge/?version=latest
-   :target: https://py2shpss.readthedocs.io/en/latest/?badge=latest
-   :alt: Documentation Status
-
 
 A python implementation of two-stage HPSS (a singing voice extraction method)
 
-Two-stage HPSS separates a music signal into harmonic, vocal, and pecussive components.
+Two-stage HPSS separates a music signal into harmonic, vocal, and percussive components.
 
 License
 -------
 
-Copyright :copyright: 2020 Hideyuki Tachibana, `MIT License <LICENSE>`_
+Copyright :copyright: 2020 Hideyuki Tachibana, `MIT License <https://github.com/tachi-hi/py2shpss/blob/master/LICENSE>`_
 
 Usage
 -----
