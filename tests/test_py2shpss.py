@@ -53,13 +53,5 @@ class TestPy2shpss(unittest.TestCase):
                 print(sisdr)
                 self.assertTrue(sisdr > 50) # infty
 
-    def HPSS_test(self):
-        if False:
-            hpss = py2shpss.HPSS("hm21")
-            h, p = hpss(s)
-            h_sig = py2shpss.STFT.iSTFT()
-            py2shpss.SISDR()
-            flag = np.abs(np.sum(h**2 + p**2 - s**2)) < np.abs(s**2)
-
 if __name__ == '__main__':
     unittest.main()

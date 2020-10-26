@@ -108,6 +108,7 @@ def SISDR(x, y):
     cos2_den = np.sum(x ** 2) * np.sum(y ** 2)
     tan2_num = cos2_den - cos2_num
     tan2_den = cos2_num
-    log_abs_tan2 = np.log(np.abs(tan2_num)) - np.log(tan2_den)
+    with np.errstate(divide='ignore'):
+        log_abs_tan2 = np.log(np.abs(tan2_num)) - np.log(tan2_den)
     SISDR = -10 * log_abs_tan2 / np.log(10)
     return SISDR
