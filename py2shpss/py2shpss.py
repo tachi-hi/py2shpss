@@ -2,11 +2,13 @@ import sys
 import numpy as np
 import scipy.signal
 from py2shpss import samprate as samprate_lib
+from py2shpss import metric
 
 class HPSS(object):
-    def __init__(self, mode='hm21', iter=30, h_size=1, p_size=1, *args, **kwargs):
+    def __init__(self, mode='hm21', iter=30, h_size=1, p_size=1, eval_obj=False, *args, **kwargs):
         self.h_filter, self.p_filter = self.__create_filter(h_size, p_size)
         self.iter = iter
+        self.eval_obj = eval_obj
 
         if mode == 'hm21':
             self.call = self._call_hm21
@@ -33,20 +35,28 @@ class HPSS(object):
         return self.call(*args, **kwargs)
 
     def _call_hm21(self, Y):
-        H = Y * 1
-        P = Y * 1
+        H = Y / np.sqrt(2)
+        P = Y / np.sqrt(2)
+        if self.eval_obj:
+            obj = []
         for i in range(self.iter):
             H_tmp = scipy.signal.convolve2d(H, self.h_filter, boundary='fill', mode='same', fillvalue=0)
             P_tmp = scipy.signal.convolve2d(P, self.p_filter, boundary='fill', mode='same', fillvalue=0)
             d = np.sqrt(H_tmp ** 2 + P_tmp ** 2)
             H = Y * H_tmp / d
             P = Y * P_tmp / d
-        return H, P
+            if self.eval_obj:
+                h_smoothness = metric.spectral_smoothness(H)[0]
+                p_smoothness = metric.spectral_smoothness(P)[1]
+                obj.append([h_smoothness, p_smoothness])
+        return H, P, (obj if self.eval_obj else None)
 
     def _call_idiv(self, Y):
-        H = Y / 2
-        P = Y / 2
+        H = Y / np.sqrt(2)
+        P = Y / np.sqrt(2)
         M = H * 0 + 0.5
+        if self.eval_obj:
+            obj = []
         for i in range(self.iter):
             ah = 2*(1 + self.qH)
             ap = 2*(1 + self.qP)
@@ -57,10 +67,14 @@ class HPSS(object):
             H = (bh + np.sqrt(bh ** 2 + ah * ch)) /ah
             P = (bp + np.sqrt(bp ** 2 + ap * cp)) /ap
             M = H**2/(H**2 + P**2 + 1e-10)
+            if self.eval_obj:
+                h_smoothness = metric.spectral_smoothness(H)[0]
+                p_smoothness = metric.spectral_smoothness(P)[1]
+                idiv = metric.i_divergence(Y**2, H**2 + P**2)
+                obj.append([h_smoothness, p_smoothness, idiv])
         H = M * Y
         P = (1 - M) * Y
-        return H, P
-
+        return H, P, (obj if self.eval_obj else None)
 
 class STFT(object):
     def __init__(self, fft_size):
@@ -104,23 +118,14 @@ class twostageHPSS(object):
 
     def __call__(self, signal):
         s, phase = self.stft_short.STFT(signal)
-        hv, p = self.hpss_short(s)
+        hv, p, obj = self.hpss_short(s)
         hv = self.stft_short.iSTFT(hv, phase)
         p = self.stft_short.iSTFT(p, phase)
 
         s, phase = self.stft_long.STFT(hv)
-        h, v = self.hpss_long(s)
+        h, v, obj = self.hpss_long(s)
         h = self.stft_long.iSTFT(h, phase)
         v = self.stft_long.iSTFT(v, phase)
 
         return h, v, p
 
-def SISDR(x, y):
-    cos2_num = np.sum(x * y) ** 2
-    cos2_den = np.sum(x ** 2) * np.sum(y ** 2)
-    tan2_num = cos2_den - cos2_num
-    tan2_den = cos2_num
-    with np.errstate(divide='ignore'):
-        log_abs_tan2 = np.log(np.abs(tan2_num)) - np.log(tan2_den)
-    SISDR = -10 * log_abs_tan2 / np.log(10)
-    return SISDR
