@@ -4,6 +4,7 @@ import unittest
 
 import numpy as np
 from py2shpss import py2shpss
+from py2shpss import samprate
 
 np.random.seed(123)
 class TestPy2shpss(unittest.TestCase):
@@ -52,6 +53,10 @@ class TestPy2shpss(unittest.TestCase):
                 sisdr = py2shpss.SISDR(sig_, sig)
                 print(sisdr)
                 self.assertTrue(sisdr > 50) # infty
+
+    def test_FFTsize(self):
+        self.assertEqual(samprate.SampRate2FFTSize(16000), (512, 4096))
+        self.assertEqual(samprate.SampRate2FFTSize(44100), (1024, 16384))
 
 if __name__ == '__main__':
     unittest.main()
