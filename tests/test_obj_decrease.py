@@ -14,7 +14,7 @@ class TestObjDecrease(unittest.TestCase):
         sr, sig = wavfile.read("../sampleSounds/doremi.wav")
         amp, phase = py2shpss.STFT(512).STFT(sig)
         # hpss
-        hpss = py2shpss.HPSS(mode='hm21', eval_obj=True)
+        hpss = py2shpss.HPSS(mode='hm21', eval_obj=True, iter=100)
         _, _, obj = hpss(amp)
         # check loss
         loss = [np.sum(_) for _ in obj]
@@ -28,7 +28,7 @@ class TestObjDecrease(unittest.TestCase):
         # hpss
         qH = 0.1
         qP = 0.1
-        hpss = py2shpss.HPSS(mode='idiv', eval_obj=True, qH = qH, qP = qP)
+        hpss = py2shpss.HPSS(mode='idiv', eval_obj=True, qH = qH, qP = qP, iter=100)
         _, _, obj = hpss(amp)
         # check loss
         loss = [h/qH + p/qP + idiv for h, p, idiv in obj]

@@ -35,8 +35,8 @@ class HPSS(object):
         return self.call(*args, **kwargs)
 
     def _call_hm21(self, Y):
-        H = Y * 1
-        P = Y * 1
+        H = Y / np.sqrt(2)
+        P = Y / np.sqrt(2)
         if self.eval_obj:
             obj = []
         for i in range(self.iter):
@@ -52,8 +52,8 @@ class HPSS(object):
         return H, P, (obj if self.eval_obj else None)
 
     def _call_idiv(self, Y):
-        H = Y / 2
-        P = Y / 2
+        H = Y / np.sqrt(2)
+        P = Y / np.sqrt(2)
         M = H * 0 + 0.5
         if self.eval_obj:
             obj = []
@@ -70,7 +70,7 @@ class HPSS(object):
             if self.eval_obj:
                 h_smoothness = metric.spectral_smoothness(H)[0]
                 p_smoothness = metric.spectral_smoothness(P)[1]
-                idiv = metric.i_divergence(H**2 + P**2, Y**2)
+                idiv = metric.i_divergence(Y**2, H**2 + P**2)
                 obj.append([h_smoothness, p_smoothness, idiv])
         H = M * Y
         P = (1 - M) * Y

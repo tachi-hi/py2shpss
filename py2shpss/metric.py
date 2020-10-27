@@ -12,9 +12,9 @@ def SISDR(x, y):
 
 def i_divergence(s1, s2, eps=1e-100):
     with np.errstate(divide='ignore'):
-        kl = s1 * (np.log(s2 + eps) - np.log(s1 + eps))
-    lin = s1 - s2
-    idiv = np.mean(kl + lin)
+        kl = - s1 * (np.log(s1 + eps) - np.log(s2 + eps))
+    lin = - s1 + s2
+    idiv = - np.mean(kl + lin)
     return idiv
 
 def spectral_smoothness(spec):
