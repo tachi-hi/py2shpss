@@ -14,10 +14,3 @@ def SampRate2FFTSize(sr):
     frame_short = 2 ** factor_short
     return frame_short, frame_long
 
-if __name__ == '__main__':
-    print(SampRate2FFTSize(16000))
-    print(SampRate2FFTSize(22050))
-    print(SampRate2FFTSize(32000))
-    print(SampRate2FFTSize(44100))
-    print(SampRate2FFTSize(48000))
-    

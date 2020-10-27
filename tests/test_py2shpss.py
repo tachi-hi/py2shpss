@@ -5,19 +5,10 @@ import unittest
 import numpy as np
 from py2shpss import py2shpss
 from py2shpss import samprate
+from py2shpss import metric
 
 np.random.seed(123)
 class TestPy2shpss(unittest.TestCase):
-    def test_SISDR(self):
-        x = np.random.normal(0, 1, 16000)
-        y = np.random.normal(0, 1, 16000)
-        for SDR in [-10, -5, 0, 5, 10]:
-            ratio = 10 ** (SDR / 20)
-            mix = y + ratio * x
-            SISDR = py2shpss.SISDR(mix, x)
-            print(SDR, SISDR)
-            self.assertTrue(np.abs(SISDR - SDR) < 1)
-
     def test_STFT_size(self):
         frames = [128, 256, 512, 1024]
         siglens = np.random.randint(16000, 48000, (10,)).tolist() + [6400, 16000]
@@ -50,7 +41,7 @@ class TestPy2shpss(unittest.TestCase):
                 self.assertTrue(len(sig_) >= siglen)
                 # evaluate sisdr
                 sig_ = sig_[:siglen]
-                sisdr = py2shpss.SISDR(sig_, sig)
+                sisdr = metric.SISDR(sig_, sig)
                 print(sisdr)
                 self.assertTrue(sisdr > 50) # infty
 
