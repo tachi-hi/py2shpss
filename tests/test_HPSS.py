@@ -5,7 +5,7 @@ import unittest
 import os
 import numpy as np
 import scipy.io.wavfile as wavfile
-from py2shpss import py2shpss
+from py2shpss.STFT import STFT
 from py2shpss.HPSS import HPSS
 from py2shpss import metric
 
@@ -22,9 +22,9 @@ class TestObjDecrease(unittest.TestCase):
         
         for fft_size in self.fft_sizes:
             # stft
-            amp, phase = py2shpss.STFT(fft_size).STFT(sig)
+            amp, phase = STFT(fft_size).forward(sig)
             # hpss
-            hpss = HPSS(mode='hm21', eval_obj=True, iter=100)
+            hpss = HPSS(mode='hm21', eval_obj=True, iter=30)
             _, _, obj = hpss(amp)
             # check loss
             loss = [np.sum(_) for _ in obj]
@@ -39,11 +39,11 @@ class TestObjDecrease(unittest.TestCase):
         for fft_size in self.fft_sizes:
             for q in self.q:
                 # stft
-                amp, phase = py2shpss.STFT(fft_size).STFT(sig)
+                amp, phase = STFT(fft_size).forward(sig)
                 # hpss
                 qH = q
                 qP = q
-                hpss = HPSS(mode='idiv', eval_obj=True, qH = qH, qP = qP, iter=100)
+                hpss = HPSS(mode='idiv', eval_obj=True, qH = qH, qP = qP, iter=30)
                 _, _, obj = hpss(amp)
                 # check loss
                 loss = [h/qH + p/qP + idiv for h, p, idiv in obj]

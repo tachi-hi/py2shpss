@@ -2,31 +2,11 @@ import sys
 import numpy as np
 import scipy.signal
 from typing import Optional
+
+from py2shpss.STFT import STFT
 from py2shpss.HPSS import HPSS
 from py2shpss import samprate as samprate_lib
 from py2shpss import metric
-
-class STFT(object):
-    def __init__(self, fft_size : int):
-        self.frame = fft_size
-        self.win = np.sin(np.arange(fft_size) / fft_size * np.pi)
-
-    def STFT(self, signal):
-        compspec = scipy.signal.stft(
-                signal,
-                window=self.win,
-                nperseg=self.frame,
-                noverlap=self.frame//2,
-                nfft=self.frame)[-1]
-        return np.abs(compspec), np.angle(compspec)
-
-    def iSTFT(self, x, phase):
-        compspec = x * np.exp(1j * phase)
-        return scipy.signal.istft(compspec,
-            window=self.win,
-            nperseg=self.frame,
-            noverlap=self.frame // 2,
-            nfft=self.frame)[-1]
 
 class twostageHPSS(object):
     def __init__(self, mode="idiv", 
@@ -59,14 +39,14 @@ class twostageHPSS(object):
         self.hpss_long = HPSS(mode=mode, iter=iter, h_size=h_size, p_size=p_size, *args, **kwargs)
 
     def __call__(self, signal):
-        s, phase = self.stft_short.STFT(signal)
+        s, phase = self.stft_short.forward(signal)
         hv, p, obj = self.hpss_short(s)
-        hv = self.stft_short.iSTFT(hv, phase)
-        p = self.stft_short.iSTFT(p, phase)
+        hv = self.stft_short.inverse(hv, phase)
+        p = self.stft_short.inverse(p, phase)
 
-        s, phase = self.stft_long.STFT(hv)
+        s, phase = self.stft_long.forward(hv)
         h, v, obj = self.hpss_long(s)
-        h = self.stft_long.iSTFT(h, phase)
-        v = self.stft_long.iSTFT(v, phase)
+        h = self.stft_long.inverse(h, phase)
+        v = self.stft_long.inverse(v, phase)
 
         return h, v, p

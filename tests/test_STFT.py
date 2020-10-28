@@ -3,7 +3,7 @@
 import unittest
 
 import numpy as np
-from py2shpss import py2shpss
+from py2shpss import STFT
 from py2shpss import samprate
 from py2shpss import metric
 
@@ -15,11 +15,11 @@ class TestPy2shpss(unittest.TestCase):
         for frame in frames:
             for siglen in siglens:
                 # stft instance
-                stft = py2shpss.STFT(frame)
+                stft = STFT.STFT(frame)
                 # create random signal
                 sig = np.random.normal(0, 1, siglen)
                 # stft
-                amp, phase = stft.STFT(sig)
+                amp, phase = stft.forward(sig)
                 # check size
                 T = -(-siglen // (frame // 2)) + 1
                 F = frame // 2 + 1
@@ -31,18 +31,17 @@ class TestPy2shpss(unittest.TestCase):
         for frame in frames:
             for siglen in siglens:
                 # stft instance
-                stft = py2shpss.STFT(frame)
+                stft = STFT.STFT(frame)
                 # create random signal
                 sig = np.random.normal(0, 1, siglen)
                 # stft and istft
-                amp, phase = stft.STFT(sig)
-                sig_ = stft.iSTFT(amp, phase)
+                amp, phase = stft.forward(sig)
+                sig_ = stft.inverse(amp, phase)
                 # check length
                 self.assertTrue(len(sig_) >= siglen)
                 # evaluate sisdr
                 sig_ = sig_[:siglen]
                 sisdr = metric.SISDR(sig_, sig)
-                print(sisdr)
                 self.assertTrue(sisdr > 50) # infty
 
     def test_FFTsize(self):
