@@ -14,7 +14,6 @@ class TestMetric(unittest.TestCase):
             ratio = 10 ** (SDR / 20)
             mix = y + ratio * x
             SISDR = metric.SISDR(mix, x)
-            print(SDR, SISDR)
             self.assertTrue(np.abs(SISDR - SDR) < 1)
 
 if __name__ == '__main__':
