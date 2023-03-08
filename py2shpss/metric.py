@@ -1,11 +1,11 @@
 import numpy as np
 
-from nptyping import NDArray
+from nptyping import NDArray, Shape, Floating
 from typing import Tuple, Any
 
 def SISDR(
-        x : NDArray[(Any,), float], 
-        y : NDArray[(Any,), float]) -> float:
+        x : NDArray[Shape['*'], Floating],
+        y : NDArray[Shape['*'], Floating]) -> float:
     """Evaluate SI-SDR between two signals.
 
     Args:
@@ -26,8 +26,8 @@ def SISDR(
     return SISDR
 
 def i_divergence(
-            s1 : NDArray[(Any, Any), float], 
-            s2 : NDArray[(Any, Any), float], 
+            s1 : NDArray[Shape['*, *'], Floating],
+            s2 : NDArray[Shape['*, *'], Floating],
             eps : float = 1e-100) -> float:
     with np.errstate(divide='ignore'):
         kl = - s1 * (np.log(s1 + eps) - np.log(s2 + eps))
@@ -36,7 +36,7 @@ def i_divergence(
     return idiv
 
 def spectral_smoothness(
-        spec: NDArray[(Any, Any), float]) -> Tuple[float, float]:
+        spec: NDArray[Shape['*, *'], Floating]) -> Tuple[float, float]:
     # spec: (freq, time)
     t_diff = spec[:,1:] - spec[:,:-1]
     f_diff = spec[1:,:] - spec[:-1,:]

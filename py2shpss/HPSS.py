@@ -2,18 +2,18 @@ import sys
 import numpy as np
 import scipy.signal
 
-from nptyping import NDArray
+from nptyping import NDArray, Shape, Floating
 from typing import Any
 
 from py2shpss import metric
 
 class HPSS(object):
-    def __init__(self, 
-                mode : str = 'hm21', 
-                iter : int = 30, 
-                h_size : int = 1, 
+    def __init__(self,
+                mode : str = 'hm21',
+                iter : int = 30,
+                h_size : int = 1,
                 p_size : int = 1,
-                eval_obj : bool =False, 
+                eval_obj : bool =False,
                 *args, **kwargs):
         assert(iter >= 1)
         assert(h_size >= 1)
@@ -44,7 +44,7 @@ class HPSS(object):
         p_filter = np.expand_dims(p_filter, 1)
         return h_filter, p_filter
 
-    def __call__(self, spec : NDArray[(Any, Any), float], *args, **kwargs):
+    def __call__(self, spec : NDArray[Shape['*,*'], Floating], *args, **kwargs):
         """Run the HPSS algorithm on the given spectrogram.
 
         Args:
